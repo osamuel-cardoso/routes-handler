@@ -1,93 +1,15 @@
+import { NotionPage } from '@/@types/notion'
 import { ClassesRow } from './ClassesRow'
 
-const classes = [
-    {
-        numero: '01',
-        titulo: 'Nosso Porquê Ⓜ️',
-        playlist: 'Apresentação',
-        fase: 'Fase 0: Introdução',
-        formato: 'Aula',
-    },
-    {
-        numero: '02',
-        titulo: 'O que é Branding',
-        playlist: 'Para ser um(a) Estrategista',
-        fase: 'Fase 1: Fundamentos',
-        formato: 'Aula',
-    },
-    {
-        numero: '03',
-        titulo: 'Posicionamento 01 - Think Different, Apple',
-        playlist: 'Para ser um(a) Estrategista',
-        fase: 'Fase 3: Posicionamento',
-        formato: 'Estudo de Caso',
-    },
-    {
-        numero: '04',
-        titulo: 'Design Thinking - O que é e como usar no Branding',
-        playlist: 'Para ser um(a) Estrategista',
-        fase: 'Fase 1: Fundamentos',
-        formato: 'Aula',
-    },
-    {
-        numero: '05',
-        titulo: 'Storytelling c/ Renata Monteiro',
-        playlist: 'Debriefing',
-        fase: 'Fase 3: Posicionamento',
-        formato: 'Aula',
-    },
-    {
-        numero: '06',
-        titulo: 'Branding Primitivo - Parte 01',
-        playlist: 'Para ser um(a) Estrategista',
-        fase: 'Fase 1: Fundamentos',
-        formato: 'Aula',
-    },
-    {
-        numero: '07',
-        titulo: 'Branding Primitivo - Parte 02',
-        playlist: 'Para ser um(a) Estrategista',
-        fase: 'Fase 1: Fundamentos',
-        formato: 'Análise de Marca',
-    },
-    {
-        numero: '08',
-        titulo: 'Implementação 01',
-        playlist: 'Diagnóstico e Pesquisa',
-        fase: 'Fase 4: Identidade',
-        formato: 'Aula',
-    },
-    {
-        numero: '09',
-        titulo: 'Mapeamento 01',
-        playlist: 'Diagnóstico e Pesquisa',
-        fase: 'Fase 2: Estratégia de Marca',
-        formato: 'Aula',
-    },
-    {
-        numero: '10',
-        titulo: 'Brand Guidelines c/ Cristiano Gonçalo',
-        playlist: 'Melhores práticas c/ Identidade Visual',
-        fase: 'Fase 4: Identidade',
-        formato: 'Aula',
-    },
-    {
-        numero: '11',
-        titulo: 'Pós-venda do Branding',
-        playlist: 'Para ter Insights',
-        fase: 'Fase 4: Identidade',
-        formato: 'Perguntas&Respostas',
-    },
-    {
-        numero: '12',
-        titulo: 'Investigação e Pesquisa c/ André Corrêa',
-        playlist: 'Diagnóstico e Pesquisa',
-        fase: 'Fase 2: Estratégia de Marca',
-        formato: 'Aula',
-    },
-]
+async function getNotionDatabasesData() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api`)
+    return res.json()
+}
 
-export function ClassesTable() {
+export async function ClassesTable() {
+    const { data } = await getNotionDatabasesData()
+    const databaseResponseData: NotionPage[] = data
+
     return (
         <>
             <table className="w-full">
@@ -111,13 +33,15 @@ export function ClassesTable() {
                     </tr>
                 </thead>
                 <tbody className="flex flex-col gap-4">
-                    {classes.map((database, index) => (
+                    {databaseResponseData.map((result) => (
                         <ClassesRow
-                            key={index}
-                            title={`${database.numero}. ${database.titulo}`}
-                            playlist={database.playlist}
-                            step={database.fase}
-                            format={database.formato}
+                            key={result.id}
+                            title={
+                                result.properties.Projeto.title[0].plain_text
+                            }
+                            playlist={result.created_time}
+                            step={result.parent.type}
+                            format={result.properties.Andamento.status.name}
                         />
                     ))}
                 </tbody>
