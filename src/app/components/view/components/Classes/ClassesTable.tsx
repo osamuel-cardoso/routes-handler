@@ -7,8 +7,8 @@ async function getNotionDatabasesData() {
 }
 
 export async function ClassesTable() {
-    const { data } = await getNotionDatabasesData()
-    const databaseResponseData: NotionPage[] = data
+    // const { data } = await getNotionDatabasesData()
+    // const databaseResponseData: NotionPage[] = data
 
     return (
         <>
@@ -33,7 +33,7 @@ export async function ClassesTable() {
                     </tr>
                 </thead>
                 <tbody className="flex flex-col gap-4">
-                    {databaseResponseData.map((result) => (
+                    {/* {databaseResponseData.map((result) => (
                         <ClassesRow
                             key={result.id}
                             title={
@@ -43,7 +43,7 @@ export async function ClassesTable() {
                             step={result.parent.type}
                             format={result.properties.Andamento.status.name}
                         />
-                    ))}
+                    ))} */}
                 </tbody>
             </table>
         </>
